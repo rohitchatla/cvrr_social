@@ -18,7 +18,7 @@
   "homepage": "https://github.com/shamahoque/mern-social",
   "main": "./dist/server.generated.js",
   "scripts": {
-    "start": "nodemon ./server/server.js",
+    "start": "node ./dist/server.generated.js",
     "development": "nodemon",
     "build": "webpack --config webpack.config.client.production.js && webpack --mode=production --config webpack.config.server.js"
   },
