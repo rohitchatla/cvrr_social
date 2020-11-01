@@ -19,6 +19,7 @@
   "main": "./dist/server.generated.js",
   "scripts": {
     "start": "nodemon ./server/server.js",
+    "heroku-postbuild": "webpack -p",
     "development": "nodemon",
     "build": "webpack --config webpack.config.client.production.js && webpack --mode=production --config webpack.config.server.js"
   },
