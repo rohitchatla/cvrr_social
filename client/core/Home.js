@@ -9,6 +9,7 @@ import Grid from "@material-ui/core/Grid";
 import auth from "./../auth/auth-helper";
 import FindPeople from "./../user/FindPeople";
 import Newsfeed from "./../post/Newsfeed";
+import cvrrlogo from "./../assets/images/cvrr_logo.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.secondary,
   },
   media: {
-    minHeight: 400,
+    minHeight: 500,
   },
   credit: {
     padding: 10,
@@ -66,7 +67,7 @@ export default function Home({ history }) {
               </Typography>
               <CardMedia
                 className={classes.media}
-                image={unicornbikeImg}
+                image={cvrrlogo}
                 title="Unicorn Bicycle"
               />
               <Typography
