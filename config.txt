@@ -30,3 +30,14 @@ add these devdep. to dep
     "start": "node ./dist/server.generated.js",
     "development": "nodemon",
     "build": "webpack --config webpack.config.client.production.js && webpack --mode=production --config webpack.config.server.js"
+
+
+
+
+    //config.js
+    // process.env.MONGO_HOST ||
+  // "mongodb://" +
+  //   (process.env.IP || "localhost") +
+  //   ":" +
+  //   (process.env.MONGO_PORT || "27017") +
+  //   "/cvrrsocial",
