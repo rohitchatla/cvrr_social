@@ -1,7 +1,7 @@
 "start": "NODE_ENV=production node ./dist/server.generated.js"
 "start": "nodemon ./server/server.js",
 "heroku-postbuild": "webpack -p",
-
+"dev": "node ./server/server.js",
 
 add these devdep. to dep
 
@@ -16,3 +16,17 @@ add these devdep. to dep
     "webpack-dev-middleware": "3.7.2",
     "webpack-hot-middleware": "2.25.0",
     "webpack-node-externals": "1.7.2"
+
+
+
+
+    //original development one
+
+    "development": "nodemon",
+    "build": "webpack --config webpack.config.client.production.js && webpack --mode=production --config webpack.config.server.js",
+    "start": "NODE_ENV=production node ./dist/server.generated.js"
+
+    //worked one (production)-->add devdependencies in dependencies
+    "start": "node ./dist/server.generated.js",
+    "development": "nodemon",
+    "build": "webpack --config webpack.config.client.production.js && webpack --mode=production --config webpack.config.server.js"

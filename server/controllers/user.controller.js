@@ -20,19 +20,33 @@ const create = async (req, res) => {
   }
 };
 
+const onlinestatus = async (req, res, next) => {
+  try {
+    //const { userId } = req.body;
+    console.log("this");
+    //res.json(userId);
+    next();
+  } catch (err) {
+    return res.status("400").json({
+      error: "Could not retrieve user",
+    });
+  }
+};
+
 /**
  * Load user and append to req.
  */
 const userByID = async (req, res, next, id) => {
   try {
     let user = await User.findById(id)
-      .populate("following", "_id name")
-      .populate("followers", "_id name")
+      .populate("following", "_id name online")
+      .populate("followers", "_id name online")
       .exec();
     if (!user)
       return res.status("400").json({
         error: "User not found",
       });
+    //console.log(user);
     req.profile = user;
     next();
   } catch (err) {
@@ -206,4 +220,5 @@ export default {
   removeFollowing,
   removeFollower,
   findPeople,
+  onlinestatus,
 };
