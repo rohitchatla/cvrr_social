@@ -10,6 +10,7 @@ const signin = async (req, res) => {
     });
 
     user.online = true;
+    user.lastseen = new Date();
     await user.save();
 
     // let userst = await User.findByIdAndUpdate(
@@ -57,6 +58,7 @@ const signout = async (req, res) => {
     email: req.body.email,
   });
   user.online = false;
+  user.lastseen = new Date();
   await user.save();
 
   res.clearCookie("t");

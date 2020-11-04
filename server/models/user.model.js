@@ -34,6 +34,7 @@ const UserSchema = new mongoose.Schema({
   following: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
   followers: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
   online: { type: Boolean, default: false },
+  lastseen: { type: Date, default: Date.now }, //lastseen: { type: String, default: new Date() },
 });
 
 UserSchema.virtual("password")

@@ -30,6 +30,8 @@ const useStyles = makeStyles((theme) => ({
   tileText: {
     textAlign: "center",
     marginTop: 10,
+    fontSize: 10,
+    fontFamily: "Raleway, Arial",
   },
 }));
 
@@ -47,10 +49,18 @@ export default function FollowGrid(props) {
                   src={"/api/users/photo/" + person._id}
                   className={classes.bigAvatar}
                 />
+                {/* {console.log(
+                  new Date(person.lastseen).toString().split("(")[0]
+                )} */}
                 <Typography className={classes.tileText}>
-                  {person.name}-{person.online ? "online" : "offline"}
+                  {person.name}-
+                  {person.online
+                    ? "online"
+                    : " @ " +
+                      new Date(person.lastseen).toString().split("(")[0]}{" "}
                 </Typography>
               </Link>
+              {/* Date.parse(person.lastseen) --> Date obj, now it is in string(person.lastseen) */}
             </GridListTile>
           );
         })}

@@ -39,8 +39,8 @@ const onlinestatus = async (req, res, next) => {
 const userByID = async (req, res, next, id) => {
   try {
     let user = await User.findById(id)
-      .populate("following", "_id name online")
-      .populate("followers", "_id name online")
+      .populate("following", "_id name online lastseen")
+      .populate("followers", "_id name online lastseen")
       .exec();
     if (!user)
       return res.status("400").json({

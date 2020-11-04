@@ -56,7 +56,6 @@ export default function Signin(props) {
       if (data.error) {
         setValues({ ...values, error: data.error });
       } else {
-        console.log(data);
         localStorage.setItem("email", data.user.email);
         auth.authenticate(data, () => {
           setValues({ ...values, error: "", redirectToReferrer: true });

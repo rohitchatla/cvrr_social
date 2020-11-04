@@ -59,7 +59,6 @@ export default function Profile({ match }) {
       { t: jwt.token },
       signal
     ).then((data) => {
-      console.log(data);
       if (data && data.error) {
         setValues({ ...values, redirectToSignin: true });
       } else {
@@ -123,7 +122,7 @@ export default function Profile({ match }) {
     const jwt = auth.isAuthenticated();
     onlinestatus(
       {
-        userId: "12",
+        userId: values.user._id,
       },
       {
         t: jwt.token,
@@ -134,6 +133,7 @@ export default function Profile({ match }) {
   };
 
   onlinest();
+
   const photoUrl = values.user._id
     ? `/api/users/photo/${values.user._id}?${new Date().getTime()}`
     : "/api/users/defaultphoto";
