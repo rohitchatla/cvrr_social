@@ -2,6 +2,7 @@ import Post from "../models/post.model";
 import errorHandler from "./../helpers/dbErrorHandler";
 import formidable from "formidable";
 import fs from "fs";
+import util from "util";
 
 const create = (req, res, next) => {
   let form = new formidable.IncomingForm();
@@ -14,9 +15,32 @@ const create = (req, res, next) => {
     }
     let post = new Post(fields);
     post.postedBy = req.profile;
+    if (fields.photostring != "undefined" && fields.photostring != undefined) {
+      //1: string undefined,2: doesn't exists undefined
+      let photoobj = JSON.parse(fields.photostring);
+      if (photoobj.path) {
+        post.photo.data = fs.readFileSync(photoobj.path);
+        post.photo.contentType = photoobj.contentType;
+        post.photo.path = photoobj.path;
+      }
+    }
+    //console.log(photoobj.path);
+    // console.log(
+    //   util.inspect(fields.photopath, { showHidden: false, depth: null })
+    // );
+    // console.log(
+    //   util.inspect(fields.phototype, { showHidden: false, depth: null })
+    // );
+
+    // if (fields.photopath) {
+    //   post.photo.data = fs.readFileSync(fields.photopath);
+    //   post.photo.contentType = fields.phototype;
+    //   post.photo.path = fields.photopath;
+    // }
     if (files.photo) {
       post.photo.data = fs.readFileSync(files.photo.path);
       post.photo.contentType = files.photo.type;
+      post.photo.path = files.photo.path;
     }
     try {
       let result = await post.save();

@@ -8,6 +8,7 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
+import ShareIcon from "@material-ui/icons/MobileScreenShareSharp";
 import EditIcon from "@material-ui/icons/Edit";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
@@ -16,7 +17,7 @@ import Divider from "@material-ui/core/Divider";
 import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link } from "react-router-dom";
-import { edit, remove, like, unlike } from "./api-post.js";
+import { edit, remove, like, unlike, create } from "./api-post.js";
 import Comments from "./Comments";
 import Axios from "../services/Axios";
 
@@ -116,6 +117,32 @@ export default function Post(props) {
     });
   };
 
+  const share = (text, photo, by) => {
+    let postData = new FormData();
+    var photostring = JSON.stringify(photo);
+    //console.log(typeof photostring);
+    postData.append("text", text + " :: " + "shared post of @" + by);
+    postData.append("photostring", photostring);
+    // postData.append("photopath", photo.path);
+    // postData.append("phototype", phot.contentType);
+    create(
+      {
+        userId: jwt.user._id,
+      },
+      {
+        t: jwt.token,
+      },
+      postData
+    ).then((data) => {
+      if (data.error) {
+        //alert("error");
+      } else {
+        alert("shared");
+        window.location.reload();
+      }
+    });
+  };
+
   const editPost = () => (event) => {
     if (event.keyCode == 13 && event.target.value) {
       console.log(props.post._id);
@@ -180,6 +207,14 @@ export default function Post(props) {
       )}
       <IconButton onClick={() => showedittext()}>
         <EditIcon />
+      </IconButton>
+
+      <IconButton
+        onClick={() =>
+          share(props.post.text, props.post.photo, props.post.postedBy.name)
+        }
+      >
+        <ShareIcon />
       </IconButton>
 
       <CardContent className={classes.cardContent}>
