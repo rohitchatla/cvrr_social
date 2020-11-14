@@ -15,7 +15,21 @@ const create = (req, res, next) => {
     }
     let post = new Post(fields);
     post.postedBy = req.profile;
+
+    //console.log(fields);
+
+    if (fields.videourl != "") {
+      post.video.contentType = "video/*";
+      post.video.path = fields.videourl;
+    }
+
+    if (fields.videourl != "") {
+      post.video.contentType = "video/*";
+      post.video.path = fields.videourl;
+    }
+
     if (fields.photostring != "undefined" && fields.photostring != undefined) {
+      //sharing can also be done by sending postid then in backend retrieving data but here reusing create_new route, by passing req data
       //1: string undefined,2: doesn't exists undefined
       let photoobj = JSON.parse(fields.photostring);
       if (photoobj.path) {

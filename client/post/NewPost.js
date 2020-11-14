@@ -14,6 +14,9 @@ import { makeStyles } from "@material-ui/core/styles";
 import { create } from "./api-post.js";
 import IconButton from "@material-ui/core/IconButton";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import VideoCamera from "@material-ui/icons/VideoCall";
+import firebase from "./firebase";
+import uuid from "react-uuid";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,34 +66,61 @@ export default function NewPost(props) {
     photo: "",
     error: "",
     user: {},
+    video: "",
   });
   const jwt = auth.isAuthenticated();
   useEffect(() => {
     setValues({ ...values, user: auth.isAuthenticated().user });
   }, []);
   const clickPost = () => {
-    let postData = new FormData();
-    postData.append("text", values.text);
-    postData.append("photo", values.photo);
-    create(
-      {
-        userId: jwt.user._id,
-      },
-      {
-        t: jwt.token,
-      },
-      postData
-    ).then((data) => {
-      if (data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        setValues({ ...values, text: "", photo: "" });
-        props.addUpdate(data);
-      }
+    const storage = firebase.storage();
+    let videourl = "";
+    var storageRef = storage.ref(`/cvrrsocial/${values.video.name + uuid()}`); //uuid()
+    //console.log(values.video);
+    storageRef.put(values.video).then(function (snapshot) {
+      snapshot.ref.getDownloadURL().then(function (downloadURL) {
+        console.log("File available at", downloadURL);
+        videourl = downloadURL;
+        // var videostring = JSON.stringify({
+        //   path: downloadURL,
+        //   contentType: values.video.contentType,
+        // });
+        let postData = new FormData();
+        postData.append("text", values.text);
+        postData.append("photo", values.photo);
+        postData.append("videourl", videourl);
+        //postData.append("videostring", videostring);
+        create(
+          {
+            userId: jwt.user._id,
+          },
+          {
+            t: jwt.token,
+          },
+          postData
+        ).then((data) => {
+          if (data.error) {
+            setValues({ ...values, error: data.error });
+          } else {
+            setValues({ ...values, text: "", photo: "", video: "" });
+            props.addUpdate(data);
+          }
+        });
+      });
     });
+
+    // storage
+    //   .ref(`/cvrrsocial/${values.video.name}`)
+    //   .getDownloadURL()
+    //   .then((url) => {
+    //     console.log("Got download url: ", url);
+    //   });
   };
   const handleChange = (name) => (event) => {
-    const value = name === "photo" ? event.target.files[0] : event.target.value;
+    const value =
+      name === "photo" || name === "video"
+        ? event.target.files[0]
+        : event.target.value;
     setValues({ ...values, [name]: value });
   };
   const photoURL = values.user._id
@@ -121,6 +151,13 @@ export default function NewPost(props) {
             id="icon-button-file"
             type="file"
           />
+          <input
+            accept="video/*"
+            onChange={handleChange("video")}
+            className={classes.input}
+            id="icon-button-video"
+            type="file"
+          />
           <label htmlFor="icon-button-file">
             <IconButton
               color="secondary"
@@ -130,8 +167,18 @@ export default function NewPost(props) {
               <PhotoCamera />
             </IconButton>
           </label>{" "}
+          <label htmlFor="icon-button-video">
+            <IconButton
+              color="secondary"
+              className={classes.photoButton}
+              component="span"
+            >
+              <VideoCamera />
+            </IconButton>
+          </label>{" "}
           <span className={classes.filename}>
             {values.photo ? values.photo.name : ""}
+            {values.video ? values.video.name : ""}
           </span>
           {values.error && (
             <Typography component="p" color="error">

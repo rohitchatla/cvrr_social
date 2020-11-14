@@ -41,3 +41,6 @@ add these devdep. to dep
   //   ":" +
   //   (process.env.MONGO_PORT || "27017") +
   //   "/cvrrsocial",
+
+
+  //read, write: if request.auth!=null;

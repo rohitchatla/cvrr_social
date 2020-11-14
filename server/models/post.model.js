@@ -4,6 +4,10 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: "Text is required",
   },
+  video: {
+    contentType: String,
+    path: String,
+  },
   photo: {
     data: Buffer,
     contentType: String,

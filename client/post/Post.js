@@ -117,12 +117,18 @@ export default function Post(props) {
     });
   };
 
-  const share = (text, photo, by) => {
+  const share = (text, photo, by, video) => {
     let postData = new FormData();
     var photostring = JSON.stringify(photo);
-    //console.log(typeof photostring);
+    //console.log(typeof photostring);//sharing can also be done by sending postid then in backend retrieving data but here reusing create_new route, by passing req data
     postData.append("text", text + " :: " + "shared post of @" + by);
     postData.append("photostring", photostring);
+    if (video && video.path != "") {
+      postData.append("videourl", video.path);
+    } else {
+      postData.append("videourl", "");
+    }
+
     // postData.append("photopath", photo.path);
     // postData.append("phototype", phot.contentType);
     create(
@@ -211,7 +217,12 @@ export default function Post(props) {
 
       <IconButton
         onClick={() =>
-          share(props.post.text, props.post.photo, props.post.postedBy.name)
+          share(
+            props.post.text,
+            props.post.photo,
+            props.post.postedBy.name,
+            props.post.video
+          )
         }
       >
         <ShareIcon />
@@ -226,6 +237,15 @@ export default function Post(props) {
             <img
               className={classes.media}
               src={"/api/posts/photo/" + props.post._id}
+            />
+          </div>
+        )}
+        {props.post.video && (
+          <div>
+            <video
+              className={classes.media}
+              src={props.post.video.path}
+              controls
             />
           </div>
         )}
