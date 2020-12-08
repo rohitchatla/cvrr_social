@@ -78,38 +78,63 @@ export default function NewPost(props) {
     var storageRef = storage.ref(`/cvrrsocial/${values.video.name + uuid()}`); //uuid()
     //var storageRef = storage.ref( `/cvrrsocial/${jwt.user._id}/${values.video.name + uuid()}`);
     //console.log(values.video);
-    storageRef.put(values.video).then(function (snapshot) {
-      snapshot.ref.getDownloadURL().then(function (downloadURL) {
-        console.log("File available at", downloadURL);
-        videourl = downloadURL;
-        // var videostring = JSON.stringify({
-        //   path: downloadURL,
-        //   contentType: values.video.contentType,
-        // });
-        let postData = new FormData();
-        postData.append("text", values.text);
-        postData.append("photo", values.photo);
-        postData.append("videourl", videourl);
-        postData.append("shared", false);
-        //postData.append("videostring", videostring);
-        create(
-          {
-            userId: jwt.user._id,
-          },
-          {
-            t: jwt.token,
-          },
-          postData
-        ).then((data) => {
-          if (data.error) {
-            setValues({ ...values, error: data.error });
-          } else {
-            setValues({ ...values, text: "", photo: "", video: "" });
-            props.addUpdate(data);
-          }
+    if (values.video) {
+      storageRef.put(values.video).then(function (snapshot) {
+        snapshot.ref.getDownloadURL().then(function (downloadURL) {
+          console.log("File available at", downloadURL);
+          videourl = downloadURL;
+          // var videostring = JSON.stringify({
+          //   path: downloadURL,
+          //   contentType: values.video.contentType,
+          // });
+          let postData = new FormData();
+          postData.append("text", values.text);
+          postData.append("photo", values.photo);
+          postData.append("videourl", videourl);
+          postData.append("shared", false);
+          //postData.append("videostring", videostring);
+          create(
+            {
+              userId: jwt.user._id,
+            },
+            {
+              t: jwt.token,
+            },
+            postData
+          ).then((data) => {
+            if (data.error) {
+              setValues({ ...values, error: data.error });
+            } else {
+              setValues({ ...values, text: "", photo: "", video: "" });
+              props.addUpdate(data);
+            }
+          });
         });
       });
-    });
+    } else {
+      let postData = new FormData();
+      postData.append("text", values.text);
+      postData.append("photo", values.photo);
+      postData.append("videourl", videourl);
+      postData.append("shared", false);
+      //postData.append("videostring", videostring);
+      create(
+        {
+          userId: jwt.user._id,
+        },
+        {
+          t: jwt.token,
+        },
+        postData
+      ).then((data) => {
+        if (data.error) {
+          setValues({ ...values, error: data.error });
+        } else {
+          setValues({ ...values, text: "", photo: "", video: "" });
+          props.addUpdate(data);
+        }
+      });
+    }
 
     // storage
     //   .ref(`/cvrrsocial/${values.video.name}`)
