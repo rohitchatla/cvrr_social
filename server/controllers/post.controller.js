@@ -38,6 +38,12 @@ const create = (req, res, next) => {
         post.photo.path = photoobj.path;
       }
     }
+
+    if (fields.shared) {
+      post.shared = fields.shared;
+    } else {
+      post.shared = fields.shared;
+    }
     //console.log(photoobj.path);
     // console.log(
     //   util.inspect(fields.photopath, { showHidden: false, depth: null })

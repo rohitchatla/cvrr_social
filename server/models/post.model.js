@@ -26,6 +26,11 @@ const PostSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  shared: {
+    //shared_bol-->for deletion of media purpose(not to delete original video in shared post as video is shared not duplicated(can be duplicated too) in shared post(space complexity))
+    type: Boolean,
+    default: false,
+  },
 });
 
 export default mongoose.model("Post", PostSchema);

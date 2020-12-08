@@ -102,8 +102,9 @@ export default function Post(props) {
   };
 
   const deletePost = () => {
-    //console.log(props.post);
-    if (props.post.video && props.post.video.path) {
+    console.log(props.post);
+    if (props.post.video && props.post.video.path && !props.post.shared) {
+      //shared_bol-->for deletion of media purpose(not to delete original video in shared post as video is shared not duplicated(can be duplicated too) in shared post(space complexity))
       const storage = firebase.storage();
 
       let vidRef = storage.refFromURL(props.post.video.path);
@@ -148,6 +149,7 @@ export default function Post(props) {
     //console.log(typeof photostring);//sharing can also be done by sending postid then in backend retrieving data but here reusing create_new route, by passing req data
     postData.append("text", text + " :: " + "shared post of @" + by);
     postData.append("photostring", photostring);
+    postData.append("shared", true);
     if (video && video.path != "") {
       postData.append("videourl", video.path);
     } else {

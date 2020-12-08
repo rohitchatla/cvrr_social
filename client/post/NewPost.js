@@ -90,6 +90,7 @@ export default function NewPost(props) {
         postData.append("text", values.text);
         postData.append("photo", values.photo);
         postData.append("videourl", videourl);
+        postData.append("shared", false);
         //postData.append("videostring", videostring);
         create(
           {
