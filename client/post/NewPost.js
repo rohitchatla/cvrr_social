@@ -76,6 +76,7 @@ export default function NewPost(props) {
     const storage = firebase.storage();
     let videourl = "";
     var storageRef = storage.ref(`/cvrrsocial/${values.video.name + uuid()}`); //uuid()
+    //var storageRef = storage.ref( `/cvrrsocial/${jwt.user._id}/${values.video.name + uuid()}`);
     //console.log(values.video);
     storageRef.put(values.video).then(function (snapshot) {
       snapshot.ref.getDownloadURL().then(function (downloadURL) {

@@ -1,4 +1,5 @@
 import { text } from "body-parser";
+import firebase from "./firebase";
 
 const create = async (params, credentials, post) => {
   try {

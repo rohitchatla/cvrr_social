@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import { edit, remove, like, unlike, create } from "./api-post.js";
 import Comments from "./Comments";
 import Axios from "../services/Axios";
+import firebase from "./firebase";
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -101,6 +102,30 @@ export default function Post(props) {
   };
 
   const deletePost = () => {
+    //console.log(props.post);
+    if (props.post.video && props.post.video.path) {
+      const storage = firebase.storage();
+
+      let vidRef = storage.refFromURL(props.post.video.path);
+      vidRef
+        .delete()
+        .then(() => {
+          console.log("Deleted1");
+        })
+        .catch((err) => console.log(err));
+    }
+
+    // if (props.post.photo && props.post.photo.path) {//only videos stored in firebase
+    //   const storage = firebase.storage();
+    //   let picRef = storage.refFromURL(props.post.photo.path);
+    //   picRef
+    //     .delete()
+    //     .then(() => {
+    //       console.log("Deleted2");
+    //     })
+    //     .catch((err) => console.log(err));
+    // }
+
     remove(
       {
         postId: props.post._id,
