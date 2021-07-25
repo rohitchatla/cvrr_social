@@ -9,6 +9,7 @@ const signin = async (req, res) => {
       email: req.body.email,
     });
 
+    //[18-01-21] --> can be online/offline/,etc toggle when context switching in screen of webapp instead of signin/signup-signout/logout/,etc, etc(in general source code can be(with some extend/extent, (client-server-/,etc)) seen in source page of chrome/etc-dev tools(inspect chrome)), etc.
     user.online = true;
     user.lastseen = new Date();
     await user.save();
